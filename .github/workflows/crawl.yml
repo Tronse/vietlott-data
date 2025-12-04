@@ -1,13 +1,14 @@
-name: Crawl Vietlott Data
+name: Crawl All Vietlott Data
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:     # Cho phép chạy bằng tay
   schedule:
-    - cron: "0 0 * * *"   # Chạy mỗi ngày lúc 00:00 UTC (khoảng 07:00 sáng VN)
+    - cron: "0 0 * * *"  # Chạy tự động mỗi ngày lúc 00:00 UTC (7h sáng VN)
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,14 +23,25 @@ jobs:
           pip install --upgrade pip
           pip install .
 
-      - name: Run crawler
-        run: |
-          vietlott-crawl power655
+      - name: Crawl Mega645
+        run: vietlott-crawl mega645
+
+      - name: Crawl Power655
+        run: vietlott-crawl power655
+
+      - name: Crawl Max3D
+        run: vietlott-crawl max3d
+
+      - name: Crawl Max3D Pro
+        run: vietlott-crawl max3dpro
+
+      - name: Crawl Max4D
+        run: vietlott-crawl max4d
 
       - name: Commit & push updated data
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add data/* || true
-          git commit -m "Update data" || true
+          git commit -m "Update Vietlott data" || true
           git push
