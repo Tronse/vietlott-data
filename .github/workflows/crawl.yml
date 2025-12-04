@@ -24,7 +24,7 @@ jobs:
 
       - name: Run crawler
         run: |
-          vietlott-crawl
+          vietlott-crawl power655
 
       - name: Commit & push updated data
         run: |
